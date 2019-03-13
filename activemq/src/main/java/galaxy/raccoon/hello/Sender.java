@@ -1,4 +1,4 @@
-package galaxy.reccon.hello;
+package galaxy.raccoon.hello;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
@@ -20,7 +20,7 @@ public class Sender {
     Connection connection = factory.createConnection();
     connection.start();
     // 3. 创建session (是否启用事务, 签收模式)
-    Session session = connection.createSession(Boolean.FALSE, Session.AUTO_ACKNOWLEDGE);
+    Session session = connection.createSession(Boolean.TRUE, Session.CLIENT_ACKNOWLEDGE);
 
 
     // 4. 创建Destination, 指的是一个客户端用来指定生产消息
@@ -28,8 +28,9 @@ public class Sender {
     // Queue; 在Pub/Sub模式中, 被称为Topic
     Destination destination = session.createQueue("queue1");
 
-    // 5. 创建发送和接受对象
-    MessageProducer producer = session.createProducer(destination);
+    // 5. 创建发送和接受对象 可以再创建producer时不指定destination,
+    //    而在具体send时, 指定各类参数, 这比如在业务逻辑中, 根据参数判断放入不同queue
+    MessageProducer producer = session.createProducer(null);
 
     // 6. 使用MessageProducer的setDeliveryMode方法设置是否持久化
     producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
@@ -43,6 +44,9 @@ public class Sender {
       producer.send(message);
       System.out.println("发送的消息: "+message.getText());
     }
+
+    // 手动commit
+    session.commit();
 
     if(null != connection){
       connection.close();

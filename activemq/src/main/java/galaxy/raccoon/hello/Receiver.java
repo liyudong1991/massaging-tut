@@ -1,4 +1,4 @@
-package galaxy.reccon.hello;
+package galaxy.raccoon.hello;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
@@ -19,8 +19,8 @@ public class Receiver {
     // 2. 通过ConnectionFactory创建Connection, 调用start方法
     Connection connection = factory.createConnection();
     connection.start();
-    // 3. 创建session (是否启用事务, 签收模式)
-    Session session = connection.createSession(Boolean.FALSE, Session.AUTO_ACKNOWLEDGE);
+    // 3. 创建session (是否启用事务, 签收模式) 使用手动签收
+    Session session = connection.createSession(Boolean.FALSE, Session.CLIENT_ACKNOWLEDGE);
 
 
     // 4. 创建Destination, 指的是一个客户端用来指定生产消息
@@ -33,7 +33,10 @@ public class Receiver {
 
     while (true) {
       TextMessage message = (TextMessage) consumer.receive();
+      // 手动签收 这里白鹤翔描述是另起一个tcp线程告诉mq数据签收了.
+      message.acknowledge();
       if (Objects.isNull(message)) {
+        //todo 这个break 似乎没有作用. 因为当queue中没有数据时, receive会阻塞.
         break;
       }
       System.out.println("接收到的消息: " + message.getText());
