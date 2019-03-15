@@ -70,8 +70,8 @@ public class Producer {
       receiver = id % 2 == 0 ? "A" : "B";
       msg3.setStringProperty("receiver", receiver);
 
-      this.producer.send(destination, msg1, DeliveryMode.NON_PERSISTENT, 2, 1000 * 60 * 10L);
-      this.producer.send(destination, msg2, DeliveryMode.NON_PERSISTENT, 6, 1000 * 60 * 10L);
+      this.producer.send(destination, msg1, DeliveryMode.PERSISTENT, 2, 1000 * 60 * 10L);
+      this.producer.send(destination, msg2, DeliveryMode.PERSISTENT, 6, 1000 * 60 * 10L);
       this.producer.send(destination, msg3, DeliveryMode.NON_PERSISTENT, 9, 1000 * 60 * 10L);
     } catch (JMSException e) {
       e.printStackTrace();
@@ -82,7 +82,7 @@ public class Producer {
     try {
       Destination destination = this.session.createQueue("first");
       TextMessage message = this.session.createTextMessage("这是一串字符串");
-      this.producer.send(destination, message, DeliveryMode.NON_PERSISTENT, 9, 1000 * 60 * 10L);
+      this.producer.send(destination, message, DeliveryMode.PERSISTENT, 9, 1000 * 60 * 10L);
     } catch (JMSException e) {
       e.printStackTrace();
     }

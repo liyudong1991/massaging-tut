@@ -5,7 +5,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import javax.jms.*;
 
 /**
- * 不适用while true的方式.
+ * 不使用while true的方式; 监听器.
  */
 public class Consumer {
 
@@ -40,11 +40,12 @@ public class Consumer {
   }
 
   /**
-   * todo activemq
+   * todo activemq 监听器原理
    */
   public void receiver(){
     try {
       this.consumer.setMessageListener(message -> {
+        // message是被观察者
         try {
           if (message instanceof TextMessage){
 
