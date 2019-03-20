@@ -1,4 +1,4 @@
-package galaxy.raccoon.hello;
+package mars.hello;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 

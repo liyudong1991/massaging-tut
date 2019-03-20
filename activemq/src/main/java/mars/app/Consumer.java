@@ -1,4 +1,4 @@
-package galaxy.raccoon.app;
+package mars.app;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
