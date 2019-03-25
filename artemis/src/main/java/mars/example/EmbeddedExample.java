@@ -68,10 +68,12 @@ public class EmbeddedExample {
       producer.send(message);
       MessageConsumer messageConsumer = session.createConsumer(queue);
       connection.start();
-      //
+      // 获取到message类型
       TextMessage messageReceived = (TextMessage) messageConsumer.receive(1000);
       System.out.println("Received message:" + messageReceived.getText());
+
     } finally {
+
       if (connection != null) {
         connection.close();
       }
